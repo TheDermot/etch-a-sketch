@@ -33,10 +33,9 @@
 }
 .square {
   border: black 1px solid;
-  flex: 1 1 calc(100% / 16);
   height: auto;
 }
 .square:hover {
-    background-color: var(--square-color);
+    background-color: var(--square-color) !important;
 }
 

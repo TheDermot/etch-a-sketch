@@ -5,7 +5,12 @@ const userSizeSelection = document.getElementById("grid-dimension");
 
 const reset = document.getElementById("reset");
 
+const pen = document.getElementById("pen");
+const eraser = document.getElementById("eraser");
+
 let colorChoice = userColorSelection.value;
+
+let currentMode = "pen";
 
 //create box
 
@@ -39,7 +44,10 @@ userSizeSelection.addEventListener("input", (event) => {
 
 //draw
 const draw = (e) => {
-  e.target.style.backgroundColor = colorChoice;
+  if (currentMode === "pen") e.target.style.backgroundColor = colorChoice;
+  else if (currentMode === "eraser") {
+    e.target.style.backgroundColor = colorChoice;
+  }
 };
 
 //track if mouse is down
@@ -74,4 +82,15 @@ reset.addEventListener("click", () => {
   userColorSelection.value = "black";
   colorChoice = "black";
   setGridSize(userSizeSelection.value);
+});
+
+pen.addEventListener("click", () => {
+  currentMode = "pen";
+  colorChoice = userColorSelection.value;
+  setHoverColor();
+});
+eraser.addEventListener("click", () => {
+  currentMode = "eraser";
+  colorChoice = "white";
+  setHoverColor();
 });

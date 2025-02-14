@@ -1,6 +1,9 @@
-//Set default grid size
-const gridSize = 16;
 const etchContainer = document.querySelector(".etch-grid");
+
+const userColorSelection = document.getElementById("grid-color");
+const userSizeSelection = document.getElementById("grid-dimension");
+
+let colorChoice = userColorSelection.value;
 
 //create box
 
@@ -11,27 +14,32 @@ const setGridSize = (gridSize) => {
     let squareSize = `1 1 calc(100%/${gridSize})`;
     square.classList.add("square");
     square.style.flex = squareSize;
-
+    //hover color
+    square.addEventListener("mouseover", (event) => {
+      event.target.style.backgroundColor = colorChoice;
+    });
+    square.addEventListener("mouseout", (event) => {
+      event.target.style.backgroundColor = "";
+    });
     //set color
-    square.addEventListener("mouseenter", (e) => {
-      if (mouseDown) draw(e);
+    square.addEventListener("mouseenter", (event) => {
+      if (mouseDown) draw(event);
     });
     //Append square
     etchContainer.appendChild(square);
   }
 };
 
-setGridSize(gridSize);
+setGridSize(userSizeSelection.value);
 
 //get user input
-const userSizeSelection = document.getElementById("grid-dimension");
 userSizeSelection.addEventListener("input", (event) => {
   setGridSize(event.target.value); //references element event was triggered by
 });
 
 //draw
 const draw = (e) => {
-  e.target.style.backgroundColor = "black";
+  e.target.style.backgroundColor = colorChoice;
 };
 
 //track if mouse is down
@@ -47,3 +55,7 @@ etchContainer.addEventListener("dragstart", (event) => {
   event.preventDefault();
 });
 
+//get color input
+userColorSelection.addEventListener("input", (event) => {
+  colorChoice = event.target.value;
+});

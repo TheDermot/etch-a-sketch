@@ -1,15 +1,21 @@
-const defaultGridSize = 16
-
-
+const gridSize = 16;
 const etchContainer = document.querySelector(".etch-grid");
-
-//Get user input
 
 //create box
 
-for (let i = 0; i < defaultGridSize * defaultGridSize; i++) {
-  console.log(i);
-  let square = document.createElement("div");
-  square.classList.add("square")
-  etchContainer.appendChild(square);
-}
+const setGridSize = (gridSize) => {
+  etchContainer.innerHTML = "";
+  for (let i = 0; i < gridSize * gridSize; i++) {
+    let square = document.createElement("div");
+    let squareSize = `1 1 calc(100%/${gridSize})`;
+    square.classList.add("square");
+    square.style.flex = squareSize;
+    etchContainer.appendChild(square);
+  }
+};
+setGridSize(gridSize);
+//get user input
+const userSizeSelection = document.getElementById("grid-dimension");
+userSizeSelection.addEventListener("input", (event) => {
+  setGridSize(event.target.value);
+});

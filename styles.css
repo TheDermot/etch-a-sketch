@@ -13,6 +13,9 @@
 .editor {
   border: red 4px solid;
   width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .grid-container {
   width: 70%;

@@ -3,6 +3,8 @@ const etchContainer = document.querySelector(".etch-grid");
 const userColorSelection = document.getElementById("grid-color");
 const userSizeSelection = document.getElementById("grid-dimension");
 
+const reset = document.getElementById("reset");
+
 let colorChoice = userColorSelection.value;
 
 //create box
@@ -60,4 +62,11 @@ userColorSelection.addEventListener("input", (event) => {
   squares.forEach((square) => {
     square.style.setProperty(`--square-color`, `${colorChoice}`);
   });
+});
+
+//resets grid and editor
+reset.addEventListener("click", () => {
+  userSizeSelection.value = 16;
+  userColorSelection.value = "black";
+  setGridSize(userSizeSelection.value);
 });

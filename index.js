@@ -58,15 +58,20 @@ etchContainer.addEventListener("dragstart", (event) => {
 //get color input
 userColorSelection.addEventListener("input", (event) => {
   colorChoice = event.target.value;
+  setHoverColor();
+});
+
+const setHoverColor = () => {
   let squares = document.querySelectorAll(".square");
   squares.forEach((square) => {
     square.style.setProperty(`--square-color`, `${colorChoice}`);
   });
-});
+};
 
 //resets grid and editor
 reset.addEventListener("click", () => {
   userSizeSelection.value = 16;
   userColorSelection.value = "black";
+  colorChoice = "black";
   setGridSize(userSizeSelection.value);
 });

@@ -36,4 +36,7 @@
   flex: 1 1 calc(100% / 16);
   height: auto;
 }
+.square:hover {
+    background-color: var(--square-color);
+}
 

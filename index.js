@@ -14,16 +14,14 @@ const setGridSize = (gridSize) => {
     let squareSize = `1 1 calc(100%/${gridSize})`;
     square.classList.add("square");
     square.style.flex = squareSize;
-    //hover color
-    square.addEventListener("mouseover", (event) => {
-      event.target.style.backgroundColor = colorChoice;
-    });
-    square.addEventListener("mouseout", (event) => {
-      event.target.style.backgroundColor = "";
-    });
+    //hover initial
+    square.style.setProperty(`--square-color`, `${colorChoice}`);
     //set color
     square.addEventListener("mouseenter", (event) => {
       if (mouseDown) draw(event);
+    });
+    square.addEventListener("mousedown", (event) => {
+      draw(event);
     });
     //Append square
     etchContainer.appendChild(square);
@@ -58,4 +56,8 @@ etchContainer.addEventListener("dragstart", (event) => {
 //get color input
 userColorSelection.addEventListener("input", (event) => {
   colorChoice = event.target.value;
+  let squares = document.querySelectorAll(".square");
+  squares.forEach((square) => {
+    square.style.setProperty(`--square-color`, `${colorChoice}`);
+  });
 });

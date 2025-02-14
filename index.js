@@ -7,7 +7,18 @@ const reset = document.getElementById("reset");
 
 const pen = document.getElementById("pen");
 const eraser = document.getElementById("eraser");
+const rainbow = document.getElementById("rainbow");
 
+const rainbowColors = [
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "blue",
+  "indigo",
+  "violet",
+];
+let rainbowIndex = 0;
 let colorChoice = userColorSelection.value;
 
 let currentMode = "pen";
@@ -22,10 +33,15 @@ const setGridSize = (gridSize) => {
     square.classList.add("square");
     square.style.flex = squareSize;
     //hover initial
+    if (currentMode === "rainbow") {
+      colorChoice = rainbow[rainbowIndex];
+    }
     square.style.setProperty(`--square-color`, `${colorChoice}`);
     //set color
     square.addEventListener("mouseenter", (event) => {
-      if (mouseDown) draw(event);
+      if (mouseDown) {
+        draw(event);
+      }
     });
     square.addEventListener("mousedown", (event) => {
       draw(event);
@@ -47,6 +63,13 @@ const draw = (e) => {
   if (currentMode === "pen") e.target.style.backgroundColor = colorChoice;
   else if (currentMode === "eraser") {
     e.target.style.backgroundColor = colorChoice;
+  } else if (currentMode === "rainbow") {
+    e.target.style.backgroundColor = rainbowColors[rainbowIndex];
+    rainbowIndex++;
+    if (rainbowIndex === 7) rainbowIndex = 0;
+    colorChoice = rainbowColors[rainbowIndex ];
+    console.log(colorChoice);
+    setHoverColor();
   }
 };
 
@@ -81,6 +104,7 @@ reset.addEventListener("click", () => {
   userSizeSelection.value = 16;
   userColorSelection.value = "black";
   colorChoice = "black";
+  currentMode = "pen";
   setGridSize(userSizeSelection.value);
 });
 
@@ -92,5 +116,10 @@ pen.addEventListener("click", () => {
 eraser.addEventListener("click", () => {
   currentMode = "eraser";
   colorChoice = "white";
+  setHoverColor();
+});
+rainbow.addEventListener("click", () => {
+  currentMode = "rainbow";
+  colorChoice = rainbowColors[rainbowIndex];
   setHoverColor();
 });

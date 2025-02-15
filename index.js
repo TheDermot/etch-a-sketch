@@ -8,6 +8,7 @@ const clear = document.getElementById("clear");
 
 const pen = document.getElementById("pen");
 const eraser = document.getElementById("eraser");
+const darken = document.getElementById("darken");
 const rainbow = document.getElementById("rainbow");
 
 const rainbowColors = [
@@ -33,6 +34,8 @@ const setGridSize = (gridSize) => {
     let squareSize = `1 1 calc(100%/${gridSize})`;
     square.classList.add("square");
     square.style.flex = squareSize;
+    square.style.backgroundColor = "white"; // Initial color
+    square.dataset.darkenCount = 0; // Track how many times the square has been darkened
     //hover initial
     if (currentMode === "rainbow") {
       colorChoice = rainbow[rainbowIndex];
@@ -60,17 +63,26 @@ userSizeSelection.addEventListener("input", (event) => {
 });
 
 //draw
-const draw = (e) => {
-  if (currentMode === "pen") e.target.style.backgroundColor = colorChoice;
-  else if (currentMode === "eraser") {
-    e.target.style.backgroundColor = colorChoice;
+const draw = (event) => {
+  if (currentMode === "pen") {
+    event.target.style.backgroundColor = colorChoice;
+  } else if (currentMode === "eraser") {
+    event.target.style.backgroundColor = colorChoice;
   } else if (currentMode === "rainbow") {
-    e.target.style.backgroundColor = rainbowColors[rainbowIndex];
+    event.target.style.backgroundColor = rainbowColors[rainbowIndex];
     rainbowIndex++;
     if (rainbowIndex === 7) rainbowIndex = 0;
     colorChoice = rainbowColors[rainbowIndex];
     console.log(colorChoice);
     setHoverColor();
+  } else if (currentMode === "darken") {
+    let currentColor = event.target.style.backgroundColor;
+    let darkenCount = parseInt(event.target.dataset.darkenCount); //custom data attribute, datasets are saved as string
+    if (darkenCount < 10) {
+      console.log("hell");
+      event.target.style.backgroundColor = darkenColor(currentColor, 0.1);
+      event.target.dataset.darkenCount = darkenCount + 1;
+    }
   }
 };
 
@@ -99,7 +111,51 @@ const setHoverColor = () => {
     square.style.setProperty(`--square-color`, `${colorChoice}`);
   });
 };
+// RGB to HSL conversion
+const rgbToHsl = (r, g, b) => {
+  (r /= 255), (g /= 255), (b /= 255);
+  let v = Math.max(r, g, b),
+    c = v - Math.min(r, g, b),
+    f = 1 - Math.abs(v + v - c - 1);
+  let h =
+    c && (v == r ? (g - b) / c : v == g ? 2 + (b - r) / c : 4 + (r - g) / c);
+  return [60 * (h < 0 ? h + 6 : h), f ? c / f : 0, (v + v - c) / 2];
+};
 
+// HSL to RGB conversion
+const hslToRgb = (h, s, l) => {
+  let a = s * Math.min(l, 1 - l);
+  let f = (n, k = (n + h / 30) % 12) =>
+    l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+  return [f(0), f(8), f(4)];
+};
+
+// Function to darken a color
+const darkenColor = (color, amount) => {
+  // Create a temporary element to get the computed color in RGB format
+  let tempElement = document.createElement("div");
+  tempElement.style.color = color;
+  document.body.appendChild(tempElement); // Add to the DOM to compute the color
+  let computedColor = window.getComputedStyle(tempElement).color;
+  document.body.removeChild(tempElement); // Clean up
+
+  // Extract RGB values from the computed color
+  let rgb = computedColor.match(/\d+/g).map(Number);
+
+  // Convert RGB to HSL
+  let [h, s, l] = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+
+  // Reduce lightness
+  l = Math.max(0, l - amount);
+
+  // Convert HSL back to RGB
+  let [r, g, b] = hslToRgb(h, s, l);
+
+  // Return the new color as an RGB string
+  return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(
+    b * 255
+  )})`;
+};
 //resets grid and editor
 reset.addEventListener("click", () => {
   userSizeSelection.value = 16;
@@ -124,6 +180,9 @@ eraser.addEventListener("click", () => {
   currentMode = "eraser";
   colorChoice = "white";
   setHoverColor();
+});
+darken.addEventListener("click", () => {
+  currentMode = "darken";
 });
 rainbow.addEventListener("click", () => {
   currentMode = "rainbow";

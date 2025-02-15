@@ -4,6 +4,7 @@ const userColorSelection = document.getElementById("grid-color");
 const userSizeSelection = document.getElementById("grid-dimension");
 
 const reset = document.getElementById("reset");
+const clear = document.getElementById("clear");
 
 const pen = document.getElementById("pen");
 const eraser = document.getElementById("eraser");
@@ -67,7 +68,7 @@ const draw = (e) => {
     e.target.style.backgroundColor = rainbowColors[rainbowIndex];
     rainbowIndex++;
     if (rainbowIndex === 7) rainbowIndex = 0;
-    colorChoice = rainbowColors[rainbowIndex ];
+    colorChoice = rainbowColors[rainbowIndex];
     console.log(colorChoice);
     setHoverColor();
   }
@@ -102,6 +103,12 @@ const setHoverColor = () => {
 //resets grid and editor
 reset.addEventListener("click", () => {
   userSizeSelection.value = 16;
+  userColorSelection.value = "black";
+  colorChoice = "black";
+  currentMode = "pen";
+  setGridSize(userSizeSelection.value);
+});
+clear.addEventListener("click", () => {
   userColorSelection.value = "black";
   colorChoice = "black";
   currentMode = "pen";

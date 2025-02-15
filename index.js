@@ -9,6 +9,7 @@ const clear = document.getElementById("clear");
 const pen = document.getElementById("pen");
 const eraser = document.getElementById("eraser");
 const darken = document.getElementById("darken");
+const lighten = document.getElementById("lighten");
 const rainbow = document.getElementById("rainbow");
 
 const rainbowColors = [
@@ -77,13 +78,25 @@ const draw = (event) => {
     setHoverColor();
   } else if (currentMode === "darken") {
     let currentColor = event.target.style.backgroundColor;
-    let darkenCount = parseInt(event.target.dataset.darkenCount); //custom data attribute, datasets are saved as string
-    if (darkenCount < 10) {
-      console.log("hell");
+    let darkenCount = parseFloat(event.target.dataset.darkenCount); //custom data attribute, datasets are saved as string
+    console.log(event.target.dataset);
+    if (darkenCount < 10 && darkenCount > 0) {
+      console.log(darkenCount);
       event.target.style.backgroundColor = darkenColor(currentColor, 0.1);
       event.target.dataset.darkenCount = darkenCount + 1;
     }
+  } else if (currentMode === "lighten") {
+    let currentColor = event.target.style.backgroundColor;
+    let darkenCount = parseFloat(event.target.dataset.darkenCount); //custom data attribute, datasets are saved as string
+    console.log(event.target.dataset);
+    if (darkenCount < 10 && darkenCount >=0) {
+      console.log(darkenCount);
+      event.target.style.backgroundColor = darkenColor(currentColor, -0.1); //same thing as darken just opposite direction
+      event.target.dataset.darkenCount = darkenCount + 1;
+    }
   }
+  let lightValue = getLightness(event);
+  event.target.dataset.darkenCount = lightValue;
 };
 
 //track if mouse is down
@@ -102,6 +115,7 @@ etchContainer.addEventListener("dragstart", (event) => {
 //get color input
 userColorSelection.addEventListener("input", (event) => {
   colorChoice = event.target.value;
+  currentMode = "pen"
   setHoverColor();
 });
 
@@ -130,17 +144,28 @@ const hslToRgb = (h, s, l) => {
   return [f(0), f(8), f(4)];
 };
 
-// Function to darken a color
-const darkenColor = (color, amount) => {
+const getLightness = (event) => {
+  let rgb = getComputedColor(event.target.style.backgroundColor);
+  // Convert RGB to HSL
+  let [h, s, l] = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+  return l;
+};
+
+const getComputedColor = (color) => {
   // Create a temporary element to get the computed color in RGB format
   let tempElement = document.createElement("div");
   tempElement.style.color = color;
   document.body.appendChild(tempElement); // Add to the DOM to compute the color
   let computedColor = window.getComputedStyle(tempElement).color;
   document.body.removeChild(tempElement); // Clean up
-
   // Extract RGB values from the computed color
   let rgb = computedColor.match(/\d+/g).map(Number);
+  return rgb;
+};
+
+// Function to darken a color
+const darkenColor = (color, amount) => {
+  let rgb = getComputedColor(color);
 
   // Convert RGB to HSL
   let [h, s, l] = rgbToHsl(rgb[0], rgb[1], rgb[2]);
@@ -183,6 +208,9 @@ eraser.addEventListener("click", () => {
 });
 darken.addEventListener("click", () => {
   currentMode = "darken";
+});
+lighten.addEventListener("click", () => {
+  currentMode = "lighten";
 });
 rainbow.addEventListener("click", () => {
   currentMode = "rainbow";

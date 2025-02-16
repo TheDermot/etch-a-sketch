@@ -29,25 +29,44 @@ html {
   flex-direction: column;
 }
 .editor label {
-    margin-bottom: 0.3rem;
-    text-align: center;
+  margin-bottom: 0.3rem;
+  text-align: center;
 }
 .editor input {
-    border-radius: 0.5rem;
-    max-width: 70%;
-    align-self: center;
+  border-radius: 0.5rem;
+  max-width: 70%;
+  align-self: center;
 }
 .editor form input {
   width: 100%;
   flex: 1 1 auto;
 }
-.editor form button {
+.editor button {
   flex: 2 1 auto;
   width: 70%;
   max-width: 90%;
   align-self: center;
   margin-top: 1rem;
   padding: 0.7rem;
+  color: rgb(255, 255, 255);
+  background-color: rgba(24, 25, 26, 0.747);
+}
+/* Active button styling */
+button.active {
+  background-color: rgba(189, 115, 115, 0.966); /* Green background for active button */
+  color: rgb(0, 0, 0); /* White text for better contrast */
+  border: 2px solid rgba(202, 189, 189, 0.589); /* Darker border for emphasis */
+  transform: scale(1.05); /* Slightly enlarge the button */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+}
+button.active:hover{
+    background-color: rgba(189, 115, 115, 0.966);
+}
+/* Button hover effect */
+button:hover {
+  background-color: rgb(214, 203, 203); /* Darker green on hover */
+  color: black;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
 }
 
 .grid-container {

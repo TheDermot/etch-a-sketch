@@ -22,9 +22,18 @@ const rainbowColors = [
   "violet",
 ];
 let rainbowIndex = 0;
+
+const buttons = [pen, eraser, darken, lighten, rainbow, clear, reset]; // All buttons
 let colorChoice = userColorSelection.value;
 
 let currentMode = "pen";
+
+// Function to set the active button
+const setActiveButton = (activeButton) => {
+  buttons.forEach((button) => button.classList.remove("active")); // Remove active class from all buttons
+  activeButton.classList.add("active"); // Add active class to the clicked button
+};
+setActiveButton(pen);
 
 //create box
 
@@ -89,7 +98,7 @@ const draw = (event) => {
     let currentColor = event.target.style.backgroundColor;
     let darkenCount = parseFloat(event.target.dataset.darkenCount); //custom data attribute, datasets are saved as string
     console.log(event.target.dataset);
-    if (darkenCount < 10 && darkenCount >=0) {
+    if (darkenCount < 10 && darkenCount >= 0) {
       console.log(darkenCount);
       event.target.style.backgroundColor = darkenColor(currentColor, -0.1); //same thing as darken just opposite direction
       event.target.dataset.darkenCount = darkenCount + 1;
@@ -115,7 +124,8 @@ etchContainer.addEventListener("dragstart", (event) => {
 //get color input
 userColorSelection.addEventListener("input", (event) => {
   colorChoice = event.target.value;
-  currentMode = "pen"
+  currentMode = "pen";
+  setActiveButton(pen);
   setHoverColor();
 });
 
@@ -181,39 +191,52 @@ const darkenColor = (color, amount) => {
     b * 255
   )})`;
 };
-//resets grid and editor
+// Reset the grid
 reset.addEventListener("click", () => {
   userSizeSelection.value = 16;
   userColorSelection.value = "black";
   colorChoice = "black";
   currentMode = "pen";
   setGridSize(userSizeSelection.value);
-});
-clear.addEventListener("click", () => {
-  userColorSelection.value = "black";
-  colorChoice = "black";
-  currentMode = "pen";
-  setGridSize(userSizeSelection.value);
+  setActiveButton(pen); // Set pen as active button
 });
 
+// Clear the grid
+clear.addEventListener("click", () => {
+  setGridSize(userSizeSelection.value);
+  setActiveButton(pen); // Set clear as active button
+});
+
+// Event listeners for mode buttons
 pen.addEventListener("click", () => {
   currentMode = "pen";
   colorChoice = userColorSelection.value;
   setHoverColor();
+  setActiveButton(pen);
 });
+
 eraser.addEventListener("click", () => {
   currentMode = "eraser";
   colorChoice = "white";
   setHoverColor();
+  setActiveButton(eraser);
 });
+
 darken.addEventListener("click", () => {
   currentMode = "darken";
+  colorChoice = "transparent"
+  setHoverColor()
+  setActiveButton(darken);
 });
+
 lighten.addEventListener("click", () => {
   currentMode = "lighten";
+  setActiveButton(lighten);
 });
+
 rainbow.addEventListener("click", () => {
   currentMode = "rainbow";
-  colorChoice = rainbowColors[rainbowIndex];
+  colorChoice = rainbowColors[rainbowIndex]
   setHoverColor();
+  setActiveButton(rainbow);
 });

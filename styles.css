@@ -4,6 +4,9 @@
   box-sizing: border-box;
 }
 
+html {
+  background-color: rgba(110, 84, 49, 0.062);
+}
 /* Root styles */
 .container {
   height: 100vh;
@@ -11,15 +14,44 @@
   display: flex;
 }
 .editor {
-  border: red 4px solid;
   width: 30%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  border-right: 2px black dashed;
 }
+.editor form {
+  width: 70%;
+  max-width: 600px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+.editor label {
+    margin-bottom: 0.3rem;
+    text-align: center;
+}
+.editor input {
+    border-radius: 0.5rem;
+    max-width: 70%;
+    align-self: center;
+}
+.editor form input {
+  width: 100%;
+  flex: 1 1 auto;
+}
+.editor form button {
+  flex: 2 1 auto;
+  width: 70%;
+  max-width: 90%;
+  align-self: center;
+  margin-top: 1rem;
+  padding: 0.7rem;
+}
+
 .grid-container {
   width: 70%;
-  border: green 4px solid;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,12 +62,17 @@
   width: 80%;
   max-width: 800px;
   aspect-ratio: 1; /* Sets width n height to be equal aka square */
+  border: clamp(0.75rem, 2rem, 1rem) solid rgb(0, 0, 0);
+  border-radius: 1rem;
+  box-shadow: rgba(50, 50, 93, 0.418) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.548) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.534) 0px -2px 6px 0px inset;
 }
+
 .square {
   border: black 1px solid;
   height: auto;
 }
 .square:hover {
-    background-color: var(--square-color) !important;
+  background-color: var(--square-color) !important;
 }
-

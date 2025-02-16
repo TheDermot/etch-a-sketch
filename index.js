@@ -1,8 +1,10 @@
 const etchContainer = document.querySelector(".etch-grid");
 
+//user inputs
 const userColorSelection = document.getElementById("grid-color");
 const userSizeSelection = document.getElementById("grid-dimension");
 
+//buttons
 const reset = document.getElementById("reset");
 const clear = document.getElementById("clear");
 
@@ -26,6 +28,7 @@ let rainbowIndex = 0;
 const buttons = [pen, eraser, darken, lighten, rainbow, clear, reset]; // All buttons
 let colorChoice = userColorSelection.value;
 
+//set initial mode to pen
 let currentMode = "pen";
 
 // Function to set the active button
@@ -40,19 +43,19 @@ setActiveButton(pen);
 const setGridSize = (gridSize) => {
   etchContainer.innerHTML = "";
   for (let i = 0; i < gridSize * gridSize; i++) {
+    //creates squares element and styles it
     let square = document.createElement("div");
     let squareSize = `1 1 calc(100%/${gridSize})`;
     square.classList.add("square");
     square.style.flex = squareSize;
     square.style.backgroundColor = "white"; // Initial color
     square.dataset.toneCount = 0; // Track the light level
-    //hover initial
-    if (currentMode === "rainbow") {
-      colorChoice = rainbow[rainbowIndex];
-    }
+
+    //hover set
     square.style.setProperty(`--square-color`, `${colorChoice}`);
-    //set color
+    //change color event
     square.addEventListener("mouseenter", (event) => {
+        //gets darkened or ligthened color for hover
       if (currentMode === "darken") {
         let nextShade = toneColor(event.target.style.backgroundColor, 0.1);
         colorChoice = nextShade;
@@ -63,10 +66,12 @@ const setGridSize = (gridSize) => {
         colorChoice = nextShade;
         setHoverColor();
       }
+      //only colors if mouse is detected as down and mouse enter for smooth drag effect
       if (mouseDown) {
         draw(event);
       }
     });
+    //for when user wants to do single click coloring and not drag
     square.addEventListener("mousedown", (event) => {
       draw(event);
     });
@@ -77,6 +82,7 @@ const setGridSize = (gridSize) => {
 
 setGridSize(userSizeSelection.value);
 
+//gets grid size when changed and sets grid size
 userSizeSelection.addEventListener("input", (event) => {
   let value = event.target.value;
   if (isNaN(value) || value < 8 || value > 64) {
@@ -84,7 +90,7 @@ userSizeSelection.addEventListener("input", (event) => {
   }
   setGridSize(value);
 });
-//draw
+//draw function for each mode
 const draw = (event) => {
   if (currentMode === "pen") {
     event.target.style.backgroundColor = colorChoice;
@@ -92,26 +98,26 @@ const draw = (event) => {
     event.target.style.backgroundColor = colorChoice;
   } else if (currentMode === "rainbow") {
     event.target.style.backgroundColor = rainbowColors[rainbowIndex];
-    rainbowIndex++;
+    rainbowIndex++; //iterates counter for rainbow colors to make sure to return to the first color after last
     if (rainbowIndex === 7) rainbowIndex = 0;
     colorChoice = rainbowColors[rainbowIndex];
-    console.log(colorChoice);
+    //console.log(colorChoice);
     setHoverColor();
   } else if (currentMode === "darken") {
     let currentColor = event.target.style.backgroundColor;
     let toneCount = parseFloat(event.target.dataset.toneCount); //custom data attribute, datasets are saved as string
-    console.log(event.target.dataset);
-    if (toneCount < 10 && toneCount > 0) {
-      console.log(toneCount);
+    //console.log(event.target.dataset);
+    if (toneCount < 10 && toneCount > 0) { //only tones when needed 
+    //   //console.log(toneCount);
       event.target.style.backgroundColor = toneColor(currentColor, 0.1);
       event.target.dataset.toneCount = toneCount + 1;
     }
   } else if (currentMode === "lighten") {
     let currentColor = event.target.style.backgroundColor;
     let toneCount = parseFloat(event.target.dataset.toneCount); //custom data attribute, datasets are saved as string
-    console.log(event.target.dataset);
+    //console.log(event.target.dataset);
     if (toneCount < 10 && toneCount >= 0) {
-      console.log(toneCount);
+      //console.log(toneCount);
       event.target.style.backgroundColor = toneColor(currentColor, -0.1); //same thing as darken just opposite direction
       event.target.dataset.toneCount = toneCount + 1;
     }
@@ -141,6 +147,7 @@ userColorSelection.addEventListener("input", (event) => {
   setHoverColor();
 });
 
+//function to setHover color using color choice
 const setHoverColor = () => {
   let squares = document.querySelectorAll(".square");
   squares.forEach((square) => {
@@ -166,6 +173,7 @@ const hslToRgb = (h, s, l) => {
   return [f(0), f(8), f(4)];
 };
 
+//function to get the current lightness level, used for toning and hover for tone mdoes
 const getLightness = (event) => {
   let rgb = getComputedColor(event.target.style.backgroundColor);
   // Convert RGB to HSL
@@ -173,6 +181,7 @@ const getLightness = (event) => {
   return l;
 };
 
+//if color isnt rgb this will compute it to rgb
 const getComputedColor = (color) => {
   // Create a temporary element to get the computed color in RGB format
   let tempElement = document.createElement("div");

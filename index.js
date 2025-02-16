@@ -45,7 +45,7 @@ const setGridSize = (gridSize) => {
     square.classList.add("square");
     square.style.flex = squareSize;
     square.style.backgroundColor = "white"; // Initial color
-    square.dataset.darkenCount = 0; // Track how many times the square has been darkened
+    square.dataset.toneCount = 0; // Track the light level
     //hover initial
     if (currentMode === "rainbow") {
       colorChoice = rainbow[rainbowIndex];
@@ -54,14 +54,14 @@ const setGridSize = (gridSize) => {
     //set color
     square.addEventListener("mouseenter", (event) => {
       if (currentMode === "darken") {
-        let nextShade = darkenColor(event.target.style.backgroundColor, 0.1);
-        colorChoice = nextShade
-        setHoverColor()
+        let nextShade = toneColor(event.target.style.backgroundColor, 0.1);
+        colorChoice = nextShade;
+        setHoverColor();
       }
       if (currentMode === "lighten") {
-        let nextShade = darkenColor(event.target.style.backgroundColor, -0.1);
-        colorChoice = nextShade
-        setHoverColor()
+        let nextShade = toneColor(event.target.style.backgroundColor, -0.1);
+        colorChoice = nextShade;
+        setHoverColor();
       }
       if (mouseDown) {
         draw(event);
@@ -97,25 +97,25 @@ const draw = (event) => {
     setHoverColor();
   } else if (currentMode === "darken") {
     let currentColor = event.target.style.backgroundColor;
-    let darkenCount = parseFloat(event.target.dataset.darkenCount); //custom data attribute, datasets are saved as string
+    let toneCount = parseFloat(event.target.dataset.toneCount); //custom data attribute, datasets are saved as string
     console.log(event.target.dataset);
-    if (darkenCount < 10 && darkenCount > 0) {
-      console.log(darkenCount);
-      event.target.style.backgroundColor = darkenColor(currentColor, 0.1);
-      event.target.dataset.darkenCount = darkenCount + 1;
+    if (toneCount < 10 && toneCount > 0) {
+      console.log(toneCount);
+      event.target.style.backgroundColor = toneColor(currentColor, 0.1);
+      event.target.dataset.toneCount = toneCount + 1;
     }
   } else if (currentMode === "lighten") {
     let currentColor = event.target.style.backgroundColor;
-    let darkenCount = parseFloat(event.target.dataset.darkenCount); //custom data attribute, datasets are saved as string
+    let toneCount = parseFloat(event.target.dataset.toneCount); //custom data attribute, datasets are saved as string
     console.log(event.target.dataset);
-    if (darkenCount < 10 && darkenCount >= 0) {
-      console.log(darkenCount);
-      event.target.style.backgroundColor = darkenColor(currentColor, -0.1); //same thing as darken just opposite direction
-      event.target.dataset.darkenCount = darkenCount + 1;
+    if (toneCount < 10 && toneCount >= 0) {
+      console.log(toneCount);
+      event.target.style.backgroundColor = toneColor(currentColor, -0.1); //same thing as darken just opposite direction
+      event.target.dataset.toneCount = toneCount + 1;
     }
   }
   let lightValue = getLightness(event);
-  event.target.dataset.darkenCount = lightValue;
+  event.target.dataset.toneCount = lightValue;
 };
 
 //track if mouse is down
@@ -183,8 +183,8 @@ const getComputedColor = (color) => {
   return rgb;
 };
 
-// Function to darken a color
-const darkenColor = (color, amount) => {
+// Function to darken/lighten a color
+const toneColor = (color, amount) => {
   let rgb = getComputedColor(color);
 
   // Convert RGB to HSL

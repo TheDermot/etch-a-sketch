@@ -32,6 +32,9 @@ html {
   margin-bottom: 0.3rem;
   text-align: center;
 }
+#grid-dimension{
+    text-align: center;
+}
 .editor input {
   border-radius: 0.5rem;
   max-width: 70%;

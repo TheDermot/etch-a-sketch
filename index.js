@@ -53,6 +53,16 @@ const setGridSize = (gridSize) => {
     square.style.setProperty(`--square-color`, `${colorChoice}`);
     //set color
     square.addEventListener("mouseenter", (event) => {
+      if (currentMode === "darken") {
+        let nextShade = darkenColor(event.target.style.backgroundColor, 0.1);
+        colorChoice = nextShade
+        setHoverColor()
+      }
+      if (currentMode === "lighten") {
+        let nextShade = darkenColor(event.target.style.backgroundColor, -0.1);
+        colorChoice = nextShade
+        setHoverColor()
+      }
       if (mouseDown) {
         draw(event);
       }
@@ -191,6 +201,7 @@ const darkenColor = (color, amount) => {
     b * 255
   )})`;
 };
+
 // Reset the grid
 reset.addEventListener("click", () => {
   userSizeSelection.value = 16;
@@ -224,8 +235,6 @@ eraser.addEventListener("click", () => {
 
 darken.addEventListener("click", () => {
   currentMode = "darken";
-  colorChoice = "transparent"
-  setHoverColor()
   setActiveButton(darken);
 });
 
@@ -236,7 +245,7 @@ lighten.addEventListener("click", () => {
 
 rainbow.addEventListener("click", () => {
   currentMode = "rainbow";
-  colorChoice = rainbowColors[rainbowIndex]
+  colorChoice = rainbowColors[rainbowIndex];
   setHoverColor();
   setActiveButton(rainbow);
 });

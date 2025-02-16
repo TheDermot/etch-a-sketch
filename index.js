@@ -77,11 +77,13 @@ const setGridSize = (gridSize) => {
 
 setGridSize(userSizeSelection.value);
 
-//get user input
 userSizeSelection.addEventListener("input", (event) => {
-  setGridSize(event.target.value); //references element event was triggered by
+  let value = event.target.value;
+  if (isNaN(value) || value < 8 || value > 64) {
+    return;
+  }
+  setGridSize(value);
 });
-
 //draw
 const draw = (event) => {
   if (currentMode === "pen") {
@@ -249,3 +251,8 @@ rainbow.addEventListener("click", () => {
   setHoverColor();
   setActiveButton(rainbow);
 });
+
+//notes:
+//can add color picker n save image
+//add doc
+//userinput valid

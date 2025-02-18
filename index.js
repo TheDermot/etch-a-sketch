@@ -227,6 +227,7 @@ reset.addEventListener("click", () => {
 clear.addEventListener("click", () => {
   setGridSize(userSizeSelection.value);
   setActiveButton(pen); // Set clear as active button
+  currentMode = "pen"
 });
 
 // Event listeners for mode buttons
@@ -263,5 +264,43 @@ rainbow.addEventListener("click", () => {
 
 //notes:
 //can add color picker n save image
-//add doc
-//userinput valid
+
+function saveGridAsImage() {
+  const grid = document.querySelector(".etch-grid");
+  const gridSize = parseInt(userSizeSelection.value); // Get grid size
+  const squareSize = grid.clientWidth / gridSize; // Calculate square size
+
+  // Create a canvas element
+  const canvas = document.createElement("canvas");
+  canvas.width = grid.clientWidth;
+  canvas.height = grid.clientHeight;
+  const ctx = canvas.getContext("2d");
+
+  // Loop through each square and draw it on the canvas
+  const squares = document.querySelectorAll(".square");
+  squares.forEach((square, index) => {
+    const row = Math.floor(index / gridSize);
+    const col = index % gridSize;
+    const x = col * squareSize;
+    const y = row * squareSize;
+
+    // Get the background color of the square
+    const color = square.style.backgroundColor;;
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, squareSize, squareSize);
+  });
+
+  // Convert the canvas to an image
+  const image = canvas.toDataURL("image/png");
+
+  // Create a download link
+  const link = document.createElement("a");
+  link.href = image;
+  link.download = "etch-a-sketch.png"; // Default file name
+  link.click();
+}
+
+const saveButton = document.getElementById("save-image");
+saveButton.addEventListener("click", saveGridAsImage);
+
+//check SO for this usibng toDataUrl

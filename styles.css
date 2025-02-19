@@ -65,11 +65,13 @@ html {
 #grid-lines label {
   margin: 0;
 }
+
 #grid-lines-toggle {
   flex: 0;
   width: auto;
   margin-inline: 1rem;
 }
+
 /* Active button styling */
 button.active {
   background-color: rgba(

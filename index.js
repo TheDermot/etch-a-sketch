@@ -13,6 +13,9 @@ const eraser = document.getElementById("eraser");
 const darken = document.getElementById("darken");
 const lighten = document.getElementById("lighten");
 const rainbow = document.getElementById("rainbow");
+const gridLinesToggle = document.getElementById("grid-lines-toggle");
+
+let gridLines = true;
 
 const rainbowColors = [
   "red",
@@ -263,8 +266,18 @@ rainbow.addEventListener("click", () => {
   setActiveButton(rainbow);
 });
 
-//notes:
-//can add color picker n save image
+gridLinesToggle.addEventListener("change", () => {
+  const squares = document.querySelectorAll(".square");
+  squares.forEach((square) => {
+    if (gridLinesToggle.checked) {
+      square.style.border = "1px solid black"; // Show grid lines
+      gridLines = true;
+    } else {
+      square.style.border = "none"; // Hide grid lines
+      gridLines = false;
+    }
+  });
+});
 
 function saveGridAsImage() {
   const grid = document.querySelector(".etch-grid");
@@ -276,7 +289,7 @@ function saveGridAsImage() {
   const canvas = document.createElement("canvas");
   canvas.width = squareSize * gridSize;
   canvas.height = squareSize * gridSize;
-  console.log(grid)
+  console.log(grid);
   const ctx = canvas.getContext("2d");
 
   // Loop through each square and draw it on the canvas
@@ -294,10 +307,12 @@ function saveGridAsImage() {
     ctx.fillStyle = color;
     ctx.fillRect(x, y, squareSize, squareSize);
 
-    // Draw the border (black)
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 1; // Adjust border thickness if needed
-    ctx.strokeRect(x, y, squareSize, squareSize);
+    if (gridLines) {
+      // Draw the border (black)
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 1; // Adjust border thickness if needed
+      ctx.strokeRect(x, y, squareSize, squareSize);
+    }
   });
 
   // Convert the canvas to an image
@@ -306,7 +321,7 @@ function saveGridAsImage() {
   // Create a download link
   const link = document.createElement("a");
   link.href = image;
-  link.download = "etch-a-sketch.png"; // Default file name
+  link.download = "etch.png"; //default
   link.click();
 }
 

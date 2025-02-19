@@ -78,10 +78,10 @@ The project is structured as follows:
 Copy
 
 etch/
-├── index.html # Main HTML file
-├── styles.css # CSS styles for the app
-├── index.js # JavaScript logic for drawing and tools
-├── README.md # Project documentation
+├── index.html          # Main HTML file
+├── styles.css          # CSS styles for the app
+├── index.js            # JavaScript logic for drawing and tools
+├── README.md           # Project documentation
 
 Technologies Used 💻
 
@@ -114,5 +114,5 @@ If you have any questions or feedback, feel free to reach out:
     GitHub: TheDermot
 
     Email: dermotcraft@gmail.com
-
+    
 Happy drawing! 🎨✨

@@ -55,7 +55,7 @@ const setGridSize = (gridSize) => {
     square.style.setProperty(`--square-color`, `${colorChoice}`);
     //change color event
     square.addEventListener("mouseenter", (event) => {
-        //gets darkened or ligthened color for hover
+      //gets darkened or ligthened color for hover
       if (currentMode === "darken") {
         let nextShade = toneColor(event.target.style.backgroundColor, 0.1);
         colorChoice = nextShade;
@@ -107,8 +107,9 @@ const draw = (event) => {
     let currentColor = event.target.style.backgroundColor;
     let toneCount = parseFloat(event.target.dataset.toneCount); //custom data attribute, datasets are saved as string
     //console.log(event.target.dataset);
-    if (toneCount < 10 && toneCount > 0) { //only tones when needed 
-    //   //console.log(toneCount);
+    if (toneCount < 10 && toneCount > 0) {
+      //only tones when needed
+      //   //console.log(toneCount);
       event.target.style.backgroundColor = toneColor(currentColor, 0.1);
       event.target.dataset.toneCount = toneCount + 1;
     }
@@ -227,7 +228,7 @@ reset.addEventListener("click", () => {
 clear.addEventListener("click", () => {
   setGridSize(userSizeSelection.value);
   setActiveButton(pen); // Set clear as active button
-  currentMode = "pen"
+  currentMode = "pen";
 });
 
 // Event listeners for mode buttons
@@ -267,27 +268,36 @@ rainbow.addEventListener("click", () => {
 
 function saveGridAsImage() {
   const grid = document.querySelector(".etch-grid");
-  const gridSize = parseInt(userSizeSelection.value); // Get grid size
-  const squareSize = grid.clientWidth / gridSize; // Calculate square size
+  const gridSize = userSizeSelection.value; // Get grid size
+  const squareSize = Math.round(grid.clientWidth / gridSize); // Calculate square size
+  console.log(squareSize);
 
   // Create a canvas element
   const canvas = document.createElement("canvas");
-  canvas.width = grid.clientWidth;
-  canvas.height = grid.clientHeight;
+  canvas.width = squareSize * gridSize;
+  canvas.height = squareSize * gridSize;
+  console.log(grid)
   const ctx = canvas.getContext("2d");
 
   // Loop through each square and draw it on the canvas
   const squares = document.querySelectorAll(".square");
   squares.forEach((square, index) => {
+    // console.log(square);
     const row = Math.floor(index / gridSize);
     const col = index % gridSize;
     const x = col * squareSize;
     const y = row * squareSize;
+    // console.log(x, y);
 
     // Get the background color of the square
-    const color = square.style.backgroundColor;;
+    const color = square.style.backgroundColor;
     ctx.fillStyle = color;
     ctx.fillRect(x, y, squareSize, squareSize);
+
+    // Draw the border (black)
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 1; // Adjust border thickness if needed
+    ctx.strokeRect(x, y, squareSize, squareSize);
   });
 
   // Convert the canvas to an image
@@ -302,5 +312,3 @@ function saveGridAsImage() {
 
 const saveButton = document.getElementById("save-image");
 saveButton.addEventListener("click", saveGridAsImage);
-
-//check SO for this usibng toDataUrl

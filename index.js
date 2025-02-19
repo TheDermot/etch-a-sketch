@@ -15,6 +15,7 @@ const lighten = document.getElementById("lighten");
 const rainbow = document.getElementById("rainbow");
 const gridLinesToggle = document.getElementById("grid-lines-toggle");
 
+//tracker for grid line toggle
 let gridLines = true;
 
 const rainbowColors = [

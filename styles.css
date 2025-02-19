@@ -55,6 +55,7 @@ html {
   color: rgb(255, 255, 255);
   background-color: rgba(24, 25, 26, 0.747);
 }
+/*grid line*/
 #grid-lines {
   width: 70%;
   align-self: center;
@@ -79,20 +80,20 @@ button.active {
     115,
     115,
     0.966
-  ); /* Green background for active button */
-  color: rgb(0, 0, 0); /* White text for better contrast */
-  border: 2px solid rgba(202, 189, 189, 0.589); /* Darker border for emphasis */
-  transform: scale(1.05); /* Slightly enlarge the button */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+  ); 
+  color: rgb(0, 0, 0); 
+  border: 2px solid rgba(202, 189, 189, 0.589); 
+  transform: scale(1.05); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 button.active:hover {
   background-color: rgba(189, 115, 115, 0.966);
 }
 /* Button hover effect */
 button:hover {
-  background-color: rgb(214, 203, 203); /* Darker green on hover */
+  background-color: rgb(214, 203, 203); 
   color: black;
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+  transition: background-color 0.3s ease, transform 0.3s ease; 
 }
 /*grid styles*/
 .grid-container {
